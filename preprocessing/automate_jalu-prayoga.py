@@ -11,6 +11,7 @@ def main():
     root_dir = os.path.dirname(current_dir)
     raw_dir = os.path.join(root_dir, "customer_churn_raw")
     dataset_file = os.path.join(raw_dir, "customer_churn.csv")
+    output_dir = os.path.join(root_dir, "customer_churn_preprocessed")
     
     # Checking existence of raw dataset
     if not os.path.exists(dataset_file):
@@ -55,7 +56,16 @@ def main():
     X_train_smote, y_train_smote = prep.apply_smote(X_train, y_train, random_state=42)
     print(f"   Training Set Size (After SMOTE): {X_train_smote.shape}")
     
-    # 6. Returning the processed dataset
+    # 6. Saving the processed datasets
+    print("6. Saving processed datasets...")
+    prep.save_processed_data(
+        X_train, X_test, y_train, y_test, 
+        output_dir, 
+        X_train_smote=X_train_smote, 
+        y_train_smote=y_train_smote
+    )
+    
+    # 7. Returning the processed dataset
     print("\nAutomation completed! Preprocessing pipeline executed successfully.")
     return X_train, X_test, y_train, y_test, X_train_smote, y_train_smote
 
