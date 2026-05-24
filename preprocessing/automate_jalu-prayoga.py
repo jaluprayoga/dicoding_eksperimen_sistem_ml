@@ -51,10 +51,10 @@ def main():
     print(f"   Training Set Size (Before SMOTE): {X_train.shape}")
     print(f"   Testing Set Size: {X_test.shape}")
     
-    # 5. Applying SMOTE-Tomek on training data
-    print("5. Applying SMOTE-Tomek on training data...")
+    # 5. Applying SMOTE on training data
+    print("5. Applying SMOTE on training data...")
     X_train_smote, y_train_smote = prep.apply_smote(X_train, y_train, random_state=42)
-    print(f"   Training Set Size (After SMOTE-Tomek): {X_train_smote.shape}")
+    print(f"   Training Set Size (After SMOTE): {X_train_smote.shape}")
     
     # 6. Saving the processed datasets
     print("6. Saving processed datasets...")
@@ -65,7 +65,30 @@ def main():
         y_train_smote=y_train_smote
     )
     
-    # 7. Returning the processed dataset
+    # 7. Automatically tracking and pushing with DVC
+    print("7. Tracking and pushing preprocessed dataset to DVC...")
+    try:
+        # Determine the DVC executable path
+        dvc_exe = "dvc"
+        venv_dvc = os.path.join(root_dir, ".venv", "Scripts", "dvc")
+        # Check for different extensions on Windows
+        for ext in ["", ".exe", ".bat", ".cmd"]:
+            if os.path.exists(venv_dvc + ext):
+                dvc_exe = venv_dvc + ext
+                break
+                
+        # Running 'dvc add'
+        print(f"   Running '{dvc_exe} add customer_churn_preprocessed'...")
+        subprocess.run([dvc_exe, "add", "customer_churn_preprocessed"], cwd=root_dir, check=True, shell=True)
+        # Running 'dvc push'
+        print(f"   Running '{dvc_exe} push'...")
+        subprocess.run([dvc_exe, "push"], cwd=root_dir, check=True, shell=True)
+        print("   DVC tracking and push completed successfully!")
+    except Exception as e:
+        print(f"   Failed to run DVC commands automatically: {e}")
+        print("   Please run 'dvc add customer_churn_preprocessed' and 'dvc push' manually.")
+    
+    # 8. Returning the processed dataset
     print("\nAutomation completed! Preprocessing pipeline executed successfully.")
     return X_train, X_test, y_train, y_test, X_train_smote, y_train_smote
 

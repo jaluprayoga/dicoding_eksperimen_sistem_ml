@@ -110,7 +110,7 @@ def apply_smote(X_train, y_train, random_state=42):
 
 def save_processed_data(X_train, X_test, y_train, y_test, output_dir, X_train_smote=None, y_train_smote=None):
     """
-    Saving processed data (and SMOTE results if provided) to separate CSV files.
+    Saving processed data to separate CSV files.
     """
     os.makedirs(output_dir, exist_ok=True)
     
@@ -122,6 +122,6 @@ def save_processed_data(X_train, X_test, y_train, y_test, output_dir, X_train_sm
     if X_train_smote is not None and y_train_smote is not None:
         X_train_smote.to_csv(os.path.join(output_dir, 'X_train_smote.csv'), index=False)
         y_train_smote.to_csv(os.path.join(output_dir, 'y_train_smote.csv'), index=False)
-        print(f"Data preprocessed & SMOTE successfully saved to {output_dir}")
+        print(f"Data preprocessed successfully saved to {output_dir}")
     else:
         print(f"Data preprocessed successfully saved to {output_dir}")
