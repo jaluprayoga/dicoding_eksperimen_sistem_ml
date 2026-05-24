@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder
-from imblearn.over_sampling import SMOTE
+from imblearn.combine import SMOTETomek
 
 def load_data(filepath):
     """
@@ -102,9 +102,9 @@ def split_and_scale(df_processed, test_size=0.2, random_state=42):
 
 def apply_smote(X_train, y_train, random_state=42):
     """
-    Applying SMOTE on training data to handle class imbalance.
+    Applying SMOTE-Tomek on training data to handle class imbalance.
     """
-    smote = SMOTE(random_state=random_state)
+    smote = SMOTETomek(random_state=random_state)
     X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
     return X_train_resampled, y_train_resampled
 

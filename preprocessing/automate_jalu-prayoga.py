@@ -51,10 +51,10 @@ def main():
     print(f"   Training Set Size (Before SMOTE): {X_train.shape}")
     print(f"   Testing Set Size: {X_test.shape}")
     
-    # 5. Applying SMOTE on training data
-    print("5. Applying SMOTE on training data...")
+    # 5. Applying SMOTE-Tomek on training data
+    print("5. Applying SMOTE-Tomek on training data...")
     X_train_smote, y_train_smote = prep.apply_smote(X_train, y_train, random_state=42)
-    print(f"   Training Set Size (After SMOTE): {X_train_smote.shape}")
+    print(f"   Training Set Size (After SMOTE-Tomek): {X_train_smote.shape}")
     
     # 6. Saving the processed datasets
     print("6. Saving processed datasets...")
