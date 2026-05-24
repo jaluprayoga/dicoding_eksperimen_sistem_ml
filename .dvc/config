@@ -1,0 +1,5 @@
+[core]
+    remote = origin
+['remote "origin"']
+    url = https://dagshub.com/jaluprayoga/dicoding_eksperimen_sistem_ml.dvc
+    auth = basic
