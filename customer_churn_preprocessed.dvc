@@ -1,6 +1,0 @@
-outs:
-- md5: 6073be9be881b1ab4736666eafc67b33.dir
-  size: 1750214
-  nfiles: 6
-  hash: md5
-  path: customer_churn_preprocessed

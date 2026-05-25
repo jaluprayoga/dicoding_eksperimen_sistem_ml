@@ -31,33 +31,33 @@ def main():
             
     print("Starting automatic data preprocessing pipeline...")
     
-    # 1. Load Data
-    print("1. Loading dataset...")
+    # Load Data
+    print("Loading dataset...")
     df = prep.load_data(dataset_file)
     print(f"   Number of rows: {len(df)}, Number of columns: {len(df.columns)}")
     
-    # 2. Clean Data
-    print("2. Cleaning data...")
+    # Clean Data
+    print("Cleaning data...")
     df_clean = prep.clean_data(df)
     
-    # 3. Encode Features
-    print("3. Performing categorical encoding...")
+    # Encode Features
+    print("Performing categorical encoding...")
     df_encoded, binary_cols, categorical_cols = prep.encode_features(df_clean)
     print(f"   Binary columns: {len(binary_cols)}, Categorical columns: {len(categorical_cols)}")
     
-    # 4. Split and Scale
-    print("4. Splitting and scaling dataset...")
+    # Split and Scale
+    print("Splitting and scaling dataset...")
     X_train, X_test, y_train, y_test = prep.split_and_scale(df_encoded, test_size=0.2, random_state=42)
     print(f"   Training Set Size (Before SMOTE): {X_train.shape}")
     print(f"   Testing Set Size: {X_test.shape}")
     
-    # 5. Applying SMOTE on training data
-    print("5. Applying SMOTE on training data...")
+    # Applying SMOTE on training data
+    print("Applying SMOTE on training data...")
     X_train_smote, y_train_smote = prep.apply_smote(X_train, y_train, random_state=42)
     print(f"   Training Set Size (After SMOTE): {X_train_smote.shape}")
     
-    # 6. Saving the processed datasets
-    print("6. Saving processed datasets...")
+    # Saving the processed datasets
+    print("Saving processed datasets...")
     prep.save_processed_data(
         X_train, X_test, y_train, y_test, 
         output_dir, 
@@ -65,30 +65,7 @@ def main():
         y_train_smote=y_train_smote
     )
     
-    # 7. Automatically tracking and pushing with DVC
-    print("7. Tracking and pushing preprocessed dataset to DVC...")
-    try:
-        # Determine the DVC executable path
-        dvc_exe = "dvc"
-        venv_dvc = os.path.join(root_dir, ".venv", "Scripts", "dvc")
-        # Check for different extensions on Windows
-        for ext in ["", ".exe", ".bat", ".cmd"]:
-            if os.path.exists(venv_dvc + ext):
-                dvc_exe = venv_dvc + ext
-                break
-                
-        # Running 'dvc add'
-        print(f"   Running '{dvc_exe} add customer_churn_preprocessed'...")
-        subprocess.run([dvc_exe, "add", "customer_churn_preprocessed"], cwd=root_dir, check=True, shell=True)
-        # Running 'dvc push'
-        print(f"   Running '{dvc_exe} push'...")
-        subprocess.run([dvc_exe, "push"], cwd=root_dir, check=True, shell=True)
-        print("   DVC tracking and push completed successfully!")
-    except Exception as e:
-        print(f"   Failed to run DVC commands automatically: {e}")
-        print("   Please run 'dvc add customer_churn_preprocessed' and 'dvc push' manually.")
-    
-    # 8. Returning the processed dataset
+    # Returning the processed dataset
     print("\nAutomation completed! Preprocessing pipeline executed successfully.")
     return X_train, X_test, y_train, y_test, X_train_smote, y_train_smote
 

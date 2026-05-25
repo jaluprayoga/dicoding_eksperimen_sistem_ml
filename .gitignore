@@ -9,4 +9,3 @@ __pycache__/
 
 # .env file
 .env
-/customer_churn_preprocessed
